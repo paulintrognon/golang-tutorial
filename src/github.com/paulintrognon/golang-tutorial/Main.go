@@ -43,6 +43,10 @@ func main() {
 	}
 
 	listBooks(me.books)
+
+	inc(&me.age)
+
+	fmt.Println("J'ai maintenant " + strconv.Itoa(me.age) + " ans !")
 }
 
 func getMajorityStatus(age int) (string, error) {
@@ -60,4 +64,8 @@ func listBooks(books []string) {
 	for index := range books {
 		fmt.Println(books[index])
 	}
+}
+
+func inc(x *int) {
+	*x++
 }
