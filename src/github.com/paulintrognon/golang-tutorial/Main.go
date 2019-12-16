@@ -1,34 +1,63 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 )
 
 const (
-	isMale = iota + 1
-	isFemale
+	male = iota + 1
+	female
 )
 
+type person struct {
+	name  string
+	age   int
+	sex   int
+	books []string
+}
+
 func main() {
-	var (
-		age  = 29
-		name = "Paulin"
-		sex  = isMale
-	)
 
-	fmt.Println("Je suis " + name + ", j'ai " + strconv.Itoa(age) + " (je suis " + majorityStatus(age) + ")")
+	me := person{
+		name:  "Paulin",
+		age:   29,
+		sex:   male,
+		books: []string{"Dune", "Foundation"},
+	}
 
-	if sex == isMale {
+	fmt.Println("Je suis " + me.name + ", j'ai " + strconv.Itoa(me.age))
+
+	majorityStatus, err := getMajorityStatus(me.age)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println("je suis " + majorityStatus)
+	}
+
+	if me.sex == male {
 		fmt.Println("Je suis un homme")
 	} else {
 		fmt.Println("Je suis une femme")
 	}
+
+	listBooks(me.books)
 }
 
-func majorityStatus(age int) string {
-	if age >= 18 {
-		return "majeur"
+func getMajorityStatus(age int) (string, error) {
+	if age < 0 {
+		return "", errors.New("L'age ne peut pas être négatif")
 	}
-	return "mineur"
+	if age >= 18 {
+		return "majeur", nil
+	}
+	return "mineur", nil
+}
+
+func listBooks(books []string) {
+	fmt.Println("Mes livres :")
+	for index := range books {
+		fmt.Println(books[index])
+	}
 }
